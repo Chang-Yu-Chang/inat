@@ -1,4 +1,4 @@
-#' Assess iNaturalist data
+#' Get lupulina data
 
 library(tidyverse)
 library(janitor)
