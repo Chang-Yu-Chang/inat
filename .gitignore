@@ -1,31 +1,31 @@
-# History files
+# R session files
 .Rhistory
 .Rapp.history
-
-# Session Data files
 .RData
 .RDataTmp
-
-# User-specific files
 .Ruserdata
 
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
+# RStudio / Rproj (not used)
 .Rproj.user/
+*.Rproj
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# renv
+renv/library/
+renv/staging/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+# Downloaded data
+data/raw/
+data/processed/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# OAuth2 token
 .httr-oauth
 
 # knitr and R markdown default cache directories

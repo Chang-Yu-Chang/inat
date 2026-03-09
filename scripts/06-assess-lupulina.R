@@ -72,7 +72,7 @@ p <- lup_na %>%
     ) +
     guides() +
     labs()
-ggsave(here::here("plot/01-lupulina_na.png"), p, width = 8, height = 5)
+ggsave("plots/01-lupulina_na.png", p, width = 8, height = 5)
 
 # Lupulina flower
 table(lup_f_na$month)
@@ -88,28 +88,4 @@ p <- lup_f_na %>%
     ) +
     guides() +
     labs()
-ggsave(here::here("plot/02-lupulina_flower_na.png"), p, width = 8, height = 5)
-
-
-#
-
-
-if (F) {
-    p <- lup_f %>%
-        mutate(month = month(datetime) %>% ordered(1:12)) %>%
-        ggplot() +
-        geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group), fill = "gray99", color = "gray40", linewidth = 0.1) +
-        geom_point(aes(x = longitude, y = latitude, color = month), size = 1, stroke = .5, shape = 21, alpha = 0.8) +
-        coord_fixed(clip = "off") +
-        scale_color_manual(values = seasonal_palette) +
-        theme_classic() +
-        theme(
-            panel.border = element_rect(color = "black", fill = NA)
-        ) +
-        guides() +
-        labs(title = "M. lupulina flower")
-    ggsave(here::here("plot/02-lupulina_flower_world.png"), p, width = 10, height = 8)
-
-
-
-}
+ggsave("plots/02-lupulina_flower_na.png", p, width = 8, height = 5)

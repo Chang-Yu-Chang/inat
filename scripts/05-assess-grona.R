@@ -212,7 +212,7 @@ pC <- dist_all %>%
 ### ============================================================
 ### Combine all panels
 ### ============================================================
-pB2 <- ggdraw() + draw_image(here::here("plots/grona.jpg"), scale = 1)
+pB2 <- ggdraw() + draw_image("plots/grona.jpg", scale = 1)
 
 p <- plot_grid(
     pA,

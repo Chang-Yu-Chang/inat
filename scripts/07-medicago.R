@@ -30,7 +30,7 @@ meds %>%
     theme() +
     guides(color = 'none') +
     labs()
-ggsave(paste0(folder_data, "scraping/medicago/05a-latitude.png"), plot = p, width = 6, height = 5)
+ggsave("plots/medicago_latitude.png", plot = p, width = 6, height = 5)
 
 
 
@@ -72,7 +72,7 @@ p <- lup_na %>%
     ) +
     guides() +
     labs()
-ggsave(here::here("plot/01-lupulina_na.png"), p, width = 8, height = 5)
+ggsave("plots/01-lupulina_na.png", p, width = 8, height = 5)
 
 # Lupulina flower
 table(lup_f_na$month)
@@ -88,4 +88,4 @@ p <- lup_f_na %>%
     ) +
     guides() +
     labs()
-ggsave(here::here("plot/02-lupulina_flower_na.png"), p, width = 8, height = 5)
+ggsave("plots/02-lupulina_flower_na.png", p, width = 8, height = 5)
