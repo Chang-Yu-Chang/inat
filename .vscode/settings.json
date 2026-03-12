@@ -1,0 +1,18 @@
+{
+    "r.lsp.enabled": true,
+    "r.lsp.debug": false,
+    "r.lsp.diagnostics": true,
+    "r.bracketedPaste": false,
+    "r.session.terminal.type": "vscode-terminal",
+    "r.alwaysUseActiveTerminal": true,
+    "[r]": {
+        "editor.suggestOnTriggerCharacters": true,
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        },
+        "editor.acceptSuggestionOnEnter": "on",
+        "editor.parameterHints.enabled": true
+    }
+}

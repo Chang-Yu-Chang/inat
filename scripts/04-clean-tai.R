@@ -90,6 +90,7 @@ clean_tai <- function(tag) {
             is_taipei   = county_en == "Taipei",
             is_pingtung = county_en == "Pingtung"
         ) |>
+        relocate(county_zh, county_en, .after = year) |>
         arrange(county_en, as.integer(year))
 
     message("Taiwan specimens: ", nrow(df))
@@ -115,7 +116,8 @@ clean_tai <- function(tag) {
             county_zh = purrr::map_chr(.match, "county_zh"),
             county_en = purrr::map_chr(.match, "county_en"),
             .match    = NULL
-        )
+        ) |>
+        relocate(county_zh, county_en, .after = year)
 
     # Save
     dir.create("data/processed", showWarnings = FALSE, recursive = TRUE)

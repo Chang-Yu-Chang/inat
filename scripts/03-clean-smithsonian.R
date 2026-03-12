@@ -77,7 +77,8 @@ df <- df |>
         country = str_trim(country),
         # Extract type status from type_citations if present
         is_type = !is.na(type_citations) & type_citations != ""
-    )
+    ) |>
+    relocate(county, .after = month)
 
 ### ============================================================
 ### 4. Summary
