@@ -1,0 +1,15 @@
+library(tidyverse)
+
+
+
+gro <- get_inat_obs(
+    taxon_name = "Grona",
+    maxresults = 10000,
+    quality = "research"
+) %>% as_tibble()
+
+# Clean duplicated epithet if needed
+gro <- gro %>%
+    mutate(scientific_name = str_replace(scientific_name, "heterocarpos heterocarpos","heterocarpos")) %>%
+    mutate(scientific_name = str_replace(scientific_name, "heterocarpos strigosa","heterocarpos"))
+

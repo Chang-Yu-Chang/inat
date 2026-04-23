@@ -12,6 +12,7 @@ library(MASS)   # kde2d
 library(FNN)    # nearest neighbor
 library(ggthemes)
 library(geosphere) # for computing distance
+library(maps)
 
 
 ### ============================================================
@@ -28,7 +29,6 @@ gro <- gro %>%
     mutate(scientific_name = str_replace(scientific_name, "heterocarpos heterocarpos","heterocarpos")) %>%
     mutate(scientific_name = str_replace(scientific_name, "heterocarpos strigosa","heterocarpos"))
 
-
 ### ============================================================
 ### 2. Subset to Taiwan only
 ### ============================================================
@@ -44,45 +44,60 @@ gro_tw <- subset_area(gro, c(21, 26), c(120, 123)) %>%
 ### ============================================================
 ### 3. Taiwan map
 ### ============================================================
-map_tw <- st_as_sf(twmap::tw_county) %>%
-    st_crop(
-        xmin = 119.8, xmax = 123,
-        ymin = 21,  ymax = 25.4
-    )
+map_tw <- st_as_sf(twmap::twbound) %>%
+    st_set_crs(3826) %>%       # TWD97 TM2 zone 121 (meters)
+    st_transform(4326)          # → WGS84 decimal degrees
 
-# map_tw <- map_data("world") %>%
-#     as_tibble() %>%
-#     filter(region == "Taiwan") %>%
-#     filter(lat > 21, long > 120)
+map_world <- st_as_sf(maps::map("world", plot = FALSE, fill = TRUE))
 
-
-ggplot(map_tw) +
-    geom_sf()
 ### ============================================================
 ### PANEL A — Taiwan wide-map (hexbin density + raw points)
 ### ============================================================
 pA <- ggplot() +
-    geom_sf(data = map_tw, fill = "gray98", color = "gray50", linewidth = 0.3) +
+    geom_sf(data = map_tw, fill = "snow", color = NA, linewidth = 0.5) +
     # density layer
-    stat_bin_2d(data = gro_tw, aes(x = longitude, y = latitude), bins = 40, alpha = 0.7) +
+    #stat_bin_hex(data = gro_tw, aes(x = longitude, y = latitude), bins = 30, alpha = 0.8) +
     scale_fill_gradient(low = "grey99", high = "grey40", name = "Density") +
     # raw points
-    geom_point(data = gro_tw, aes(longitude, latitude, color = scientific_name), alpha = 0.6, size = 0.3) +
-    # zoom in
-    geom_rect(aes(xmin = 121.4, xmax = 121.6, ymin = 24.9, ymax = 25.1), color = "black", fill = "NA", linewidth = .5) +
-    scale_color_brewer(palette = "Set2", name = "Species") +
+    geom_point(data = gro_tw, aes(longitude, latitude), color = "darkgreen", alpha = 0.8, size = 1, shape = 16, stroke = 1) +
+    # geom_sf(data = map_tw, fill = NA, color = "black", linewidth = 0.5) +
+    #scale_color_brewer(palette = "Set2", name = "Species") +
     scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
     scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
     coord_sf(clip = "off") +
-    theme_minimal() +
+    theme_minimal(base_size = 20) +
     theme(
         legend.position = "bottom",
         legend.background = element_blank()
     ) +
     guides(
-        color = "none"
+        color = "none", density = "none"
     ) +
     labs(x = "Longitude", y = "Latitude")
+
+ggsave("plots/05-tw.png", pA, width = 6, height = 6, dpi = 300)
+ggsave("plots/05-tw.svg", pA, width = 6, height = 6, dpi = 300)
+
+p <- ggplot() +
+    geom_sf(data = map_world, fill = "snow", color = NA, linewidth = 0.5) +
+    scale_fill_gradient(low = "grey99", high = "grey40", name = "Density") +
+    geom_point(data = gro, aes(longitude, latitude), color = "darkgreen", alpha = 0.8, size = 1, shape = 16, stroke = 1) +
+    geom_sf(data = map_tw, fill = NA, color = "black", linewidth = 0.5) +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
+    coord_sf(clip = "off") +
+    theme_minimal(base_size = 20) +
+    theme(
+        legend.position = "bottom",
+        legend.background = element_blank()
+    ) +
+    guides(
+        color = "none", density = "none"
+    ) +
+    labs(x = "Longitude", y = "Latitude")
+
+ggsave("plots/05-world.svg", p, width = 10, height = 6, dpi = 300)
+ggsave("plots/05-world.png", p, width = 10, height = 6, dpi = 300)
 
 ### ============================================================
 ### PANEL A inset — Species counts barplot
@@ -227,5 +242,5 @@ p <- plot_grid(
     theme(plot.background = element_rect(color = NA, fill = "white")) +
     draw_plot(pA2, .03, .75, .15, .23)
 
-ggsave("plots/grona.png", p, width = 8, height = 6, dpi = 300)
+ggsave("plots/05-grona.png", p, width = 8, height = 6, dpi = 300)
 

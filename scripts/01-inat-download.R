@@ -79,3 +79,5 @@ subset_area <- function(df, lat, lon) {
 #
 # lupulina <- inat_download("Medicago lupulina", maxresults = 5000)
 # lupulina_flower <- inat_download("Medicago lupulina", query = "flower", maxresults = 1000)
+
+
